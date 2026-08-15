@@ -23,7 +23,7 @@ jobs:
           claude_args: |
             --model claude-sonnet-5
             --allowedTools "Bash,Read,Write,Edit,Grep,Glob,WebSearch,WebFetch"
-            --max-turns 40
+            --max-turns 80
           prompt: |
             너는 매일 오전 10시(KST)에 실행되는 "AI 데일리 브리핑" 자동화 작업이다.
             목적: Claude(Anthropic), ChatGPT/GPT(OpenAI), Gemini(Google) 세 곳의 최신 소식(공식 발표,
