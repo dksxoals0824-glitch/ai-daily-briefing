@@ -23,14 +23,19 @@ jobs:
           claude_args: |
             --model claude-sonnet-5
             --allowedTools "Bash,Read,Write,Edit,Grep,Glob,WebSearch,WebFetch"
-            --max-turns 80
+            --max-turns 100
           prompt: |
             너는 매일 오전 10시(KST)에 실행되는 "AI 데일리 브리핑" 자동화 작업이다.
-            목적: Claude(Anthropic), ChatGPT/GPT(OpenAI), Gemini(Google) 세 곳의 최신 소식(공식 발표,
-            릴리스노트, 유튜브 영상)을 조사해서 이 저장소 루트의 index.html을 최신 내용으로 갱신하고
-            git으로 커밋·푸시하는 것이다. 사용자는 한국인이라 한국어 콘텐츠를 선호한다.
+            목적: (A) Claude(Anthropic), ChatGPT/GPT(OpenAI), Gemini(Google) 세 곳의 최신 소식,
+            (B) 세 회사에 국한되지 않는 "이번 주 핫한 AI" 화제, (C) 영상·이미지·음악을 만드는 생성 AI
+            (Runway, Veo, Sora, Midjourney, Nano Banana, Suno, Udio 등) 소식을 조사해서 이 저장소
+            루트의 index.html을 최신 내용으로 갱신하고 git으로 커밋·푸시하는 것이다. 사용자는 한국인이라
+            한국어 콘텐츠를 선호한다. index.html은 이미 4개 구역으로 구성되어 있다: 상단 "🔥 이번 주
+            핫한 AI"(class="spotlight"), 3단 컬럼 Claude/GPT/Gemini(class="grid"), "🎬🎨🎵 영상·이미지·
+            음악 생성 AI"(class="media-section", 내부에 영상/이미지/음악 3개 mcol), 맨 하단 "오늘의 AI
+            활용 가이드"(class="guide"). 이 구조를 절대 바꾸지 말고 각 구역의 내용만 매일 최신화한다.
 
-            [영상 배치 규칙]
+            [영상 배치 규칙 — Claude/GPT/Gemini 컬럼]
             - 각 컬럼(Claude/GPT/Gemini) 맨 위, col-head 바로 아래에 "🎬 주요 영상 (한국어, 중요도순)"
               섹션(class="videos top-videos")을 배치한다. 뉴스 항목(class="item")들보다 항상 위에 온다.
             - 영상은 회사당 3~5개를 목표로 하되, 실제로 검색해서 찾은 것만 넣는다. 가장 중요한 소식을
@@ -39,7 +44,25 @@ jobs:
               절대 넣지 않는다. 못 찾으면 억지로 채우지 말고 개수를 줄이거나 안내 문구를 작게 추가한다.
             - 링크나 제목을 지어내지 말 것 — WebSearch로 실제 확인된 것만 사용한다.
 
-            [언어 전략 - 하이브리드]
+            [이번 주 핫한 AI — class="spotlight"]
+            - Claude/GPT/Gemini 세 회사에 얽매이지 않고, 업계 전반에서 화제가 된 AI 소식(신모델,
+              대형 투자, 논란, 신기술 등)을 2~4개 골라 class="spot-card" 카드로 채운다.
+            - 이미 아래 영상·이미지·음악 섹션이나 3사 컬럼에 나온 소식이어도 "이번 주 가장 화제였다"고
+              판단되면 다시 짧게 요약해 넣는 것은 괜찮다(중복 자체는 문제 없음).
+            - 매번 정확히 몇 개를 채워야 한다는 규칙은 없다. 실제로 확인된 화제성 있는 소식만 넣고,
+              부족하면 개수를 줄인다. 지어내지 않는다.
+
+            [영상·이미지·음악 생성 AI — class="media-section"]
+            - 내부에 mcol video / mcol image / mcol music 3개 섹션이 있다. 각각 대표적인 도구
+              (영상: Runway, Veo, Sora, Kling, Pika 등 / 이미지: Midjourney, Nano Banana(Bimg AI),
+              DALL-E, Flux, Ideogram 등 / 음악: Suno, Udio, Google Lyria 등)의 최신 소식이나 신기능을
+              항목당 1~3개(class="item") 유지한다.
+            - 뉴스가 아니어도, 그 시점 기준 대표 도구·버전 소개여도 괜찮다(너무 오래되지 않은 선에서).
+              날짜를 정확히 확인해 item-date에 표기하고, 몇 달 이상 지난 소식이면 "최근"이라고
+              뭉뚱그리지 말고 실제 날짜(YYYY.MM 또는 YYYY.MM.DD)를 그대로 쓴다.
+            - 이 섹션도 유튜브 영상을 곁들이고 싶으면 자유롭게 추가해도 되지만 필수는 아니다(간결함 우선).
+
+            [언어 전략 - 하이브리드, 전 구역 공통]
             - 공식 발표/릴리스노트: 영어 원문 기준 조사 가능하지만 요약은 반드시 한국어로 쓰고
               <span class="badge">번역 요약</span> 배지를 붙인다. 한국어 공식 소스가 있으면
               (예: blog.google/intl/ko-kr) 그것을 우선 사용하고 <span class="badge kr">한국어 공식</span>.
@@ -47,20 +70,22 @@ jobs:
               <span class="badge kr">한국어 리뷰</span> 배지를 붙인다.
 
             [절차]
-            1. WebSearch/WebFetch로 다음을 확인해 지난 24~48시간(부족하면 최근 1주) 내 새 소식을 찾는다:
+            1. WebSearch/WebFetch로 다음을 확인해 지난 24~48시간(부족하면 최근 1~2주) 내 새 소식을 찾는다:
                - https://www.anthropic.com/news , Claude 릴리스노트
                - https://openai.com/products/release-notes/ , https://help.openai.com 관련 페이지
                - https://ai.google.dev/gemini-api/docs/changelog , https://deepmind.google ,
                  https://blog.google , https://blog.google/intl/ko-kr (한국어 공식 우선 확인)
                - 한국어 뉴스: "클로드", "챗GPT", "제미나이" + 모델명으로 국내 IT 매체 검색
+               - "이번주 AI 화제", "AI 트렌드" 등으로 업계 전반 화제 소식 검색 (spotlight용)
+               - "영상 생성 AI", "이미지 생성 AI", "음악 생성 AI" + 최신/신기능 등으로 각 도구별 검색
                - 유튜브: 위 영상 배치 규칙대로 한국어 영상 검색
             2. Read로 현재 index.html을 읽어 기존 디자인/구조/CSS/배지 스타일을 파악한다. 절대 CSS나
-               전체 레이아웃 구조를 바꾸지 말고, 컬럼 내용(영상 섹션 + 뉴스 항목)만 최신화한다.
-            3. 각 컬럼의 뉴스 항목은 최신순으로 4~5개만 남긴다(오래된 것 제거). 각 항목은 날짜, 배지,
-               2~3문장 한국어 요약, 실제 확인된 출처 링크를 포함해야 한다.
-            4. 특정 회사에서 새 소식/영상을 못 찾았으면 기존 항목을 그대로 유지한다.
+               전체 레이아웃 구조(4개 구역)를 바꾸지 말고, 각 구역 내용만 최신화한다.
+            3. Claude/GPT/Gemini 각 컬럼의 뉴스 항목은 최신순으로 4~5개만 남긴다(오래된 것 제거). 각
+               항목은 날짜, 배지, 2~3문장 한국어 요약, 실제 확인된 출처 링크를 포함해야 한다.
+            4. 특정 회사·영역에서 새 소식/영상을 못 찾았으면 기존 항목을 그대로 유지한다.
             5. 상단 "마지막 업데이트" 문구를 오늘 날짜/오전 10:00 KST로 갱신한다.
-            6. "오늘의 AI 활용 가이드" 섹션도 최신 소식을 반영해 간단히 갱신한다.
+            6. "오늘의 AI 활용 가이드" 섹션도 최신 소식(영상·이미지·음악 AI 포함)을 반영해 간단히 갱신한다.
             7. Edit/Write로 index.html을 갱신한 뒤, 다음을 실행해 커밋·푸시한다:
                git config user.name "ai-daily-briefing-bot"
                git config user.email "actions@users.noreply.github.com"
