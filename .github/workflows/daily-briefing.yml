@@ -27,13 +27,17 @@ jobs:
           prompt: |
             너는 매일 오전 10시(KST)에 실행되는 "AI 데일리 브리핑" 자동화 작업이다.
             목적: (A) Claude(Anthropic), ChatGPT/GPT(OpenAI), Gemini(Google) 세 곳의 최신 소식,
-            (B) 세 회사에 국한되지 않는 "이번 주 핫한 AI" 화제, (C) 영상·이미지·음악을 만드는 생성 AI
-            (Runway, Veo, Sora, Midjourney, Nano Banana, Suno, Udio 등) 소식을 조사해서 이 저장소
-            루트의 index.html을 최신 내용으로 갱신하고 git으로 커밋·푸시하는 것이다. 사용자는 한국인이라
-            한국어 콘텐츠를 선호한다. index.html은 이미 4개 구역으로 구성되어 있다: 상단 "🔥 이번 주
-            핫한 AI"(class="spotlight"), 3단 컬럼 Claude/GPT/Gemini(class="grid"), "🎬🎨🎵 영상·이미지·
-            음악 생성 AI"(class="media-section", 내부에 영상/이미지/음악 3개 mcol), 맨 하단 "오늘의 AI
-            활용 가이드"(class="guide"). 이 구조를 절대 바꾸지 말고 각 구역의 내용만 매일 최신화한다.
+            (B) 챗봇·음악·이미지·영상 등 카테고리 상관없이 이번 주 실제로 가장 화제였던 AI 랭킹
+            TOP3, (C) 영상·이미지·음악을 만드는 생성 AI(Runway, Veo, Sora, Midjourney, Nano Banana,
+            Suno, Udio 등) 소식을 조사해서 이 저장소 루트의 index.html을 최신 내용으로 갱신하고
+            git으로 커밋·푸시하는 것이다. 사용자는 한국인이라 한국어 콘텐츠를 선호한다. index.html은
+            이미 4개 구역으로 구성되어 있다: 상단 "🏆 금주에 핫한 AI 순위 TOP3"(class="spotlight",
+            1~3위가 가로로 넓은 바 형태로 세로로 쌓여있음), 그 아래 "🤖 챗봇형 AI 빅3 최신 소식"
+            제목(class="grid-section-head")과 3단 컬럼 Claude/GPT/Gemini(class="grid"),
+            "🎬🎨🎵 영상·이미지·음악 생성 AI"(class="media-section", 내부에 영상/이미지/음악 3개
+            mcol), 맨 하단 "오늘의 AI 활용 가이드"(class="guide"). 이 구조를 절대 바꾸지 말고 각
+            구역의 내용만 매일 최신화한다. 특히 spotlight와 grid 사이에 구분선·제목이 있어야
+            섹션이 뭉쳐 보이지 않으니, grid-section-head를 절대 지우지 않는다.
 
             [영상 배치 규칙 — Claude/GPT/Gemini 컬럼]
             - 각 컬럼(Claude/GPT/Gemini) 맨 위, col-head 바로 아래에 "🎬 주요 영상 (한국어, 중요도순)"
@@ -44,13 +48,25 @@ jobs:
               절대 넣지 않는다. 못 찾으면 억지로 채우지 말고 개수를 줄이거나 안내 문구를 작게 추가한다.
             - 링크나 제목을 지어내지 말 것 — WebSearch로 실제 확인된 것만 사용한다.
 
-            [이번 주 핫한 AI — class="spotlight"]
-            - Claude/GPT/Gemini 세 회사에 얽매이지 않고, 업계 전반에서 화제가 된 AI 소식(신모델,
-              대형 투자, 논란, 신기술 등)을 2~4개 골라 class="spot-card" 카드로 채운다.
-            - 이미 아래 영상·이미지·음악 섹션이나 3사 컬럼에 나온 소식이어도 "이번 주 가장 화제였다"고
-              판단되면 다시 짧게 요약해 넣는 것은 괜찮다(중복 자체는 문제 없음).
-            - 매번 정확히 몇 개를 채워야 한다는 규칙은 없다. 실제로 확인된 화제성 있는 소식만 넣고,
-              부족하면 개수를 줄인다. 지어내지 않는다.
+            [금주에 핫한 AI 순위 TOP3 — class="spotlight"]
+            - 챗봇 AI든 음악 AI든 이미지 AI든 영상 AI든 카테고리를 가리지 않고, 이번 주(최근 1~2주)
+              실제로 가장 화제였던 "AI 3개"를 순위(1~3위)로 뽑는다. 회사/제품 단위로 하나씩, 총 3개.
+              같은 회사가 중복으로 여러 자리를 차지하지 않도록 한다 — 카테고리가 최대한 겹치지 않게
+              다양성 있게 고른다(예: 챗봇 1개 + 음악 1개 + 이미지 1개, 또는 그 주에 실제로 제일
+              화제였던 조합이 다르면 그에 맞게).
+            - "화제성"의 근거는 사용자 수·다운로드/앱 순위 급상승, 대형 투자·인수, 논란·소송, 신모델
+              출시 반응, SNS·커뮤니티 화제도 등을 종합 판단한다. 단순 스펙 자랑이 아니라 "왜 이번 주
+              특히 화제였는지" 근거를 반드시 1문장(class="why")으로 명시한다.
+            - HTML 구조는 반드시 이 형태를 유지한다(가로로 넓은 바 형태 카드가 1위→2위→3위 순서로
+              세로로 쌓이는 구조. 순위별 색상은 CSS에 이미 정의돼 있음 — rank-1/2/3 클래스와 🥇🥈🥉
+              이모지, class="cat-tag"에 카테고리명 예: 챗봇 AI/음악 AI/이미지 AI/영상 AI):
+              <div class="spot-card rank-N">
+                <div class="spot-rank"><span class="medal">[메달]</span><span class="rank-num">N위</span><span class="cat-tag">[카테고리]</span></div>
+                <div class="spot-body"><h3>[AI 이름]</h3><div class="why">왜 N위? — [한 줄 근거]</div><p>[2~3문장 설명]</p><a href="[출처]" target="_blank">[링크 텍스트] →</a></div>
+              </div>
+            - 반드시 실제로 검색해 확인한 소식만 사용한다. 이번 주에 확실히 화제성 있는 후보가 3개가
+              안 되면 최근 2~3주까지 범위를 넓혀서라도 3개를 채운다(순위 코너이므로 개수를 줄이지
+              않는다 — 단, 여전히 지어내지는 않는다).
 
             [영상·이미지·음악 생성 AI — class="media-section"]
             - 내부에 mcol video / mcol image / mcol music 3개 섹션이 있다. 각각 대표적인 도구
